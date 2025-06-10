@@ -1,22 +1,56 @@
 # TradingAgents: Master Architecture & Development Plan
 
 ## 📋 Project Overview
-**TradingAgents** is a multi-agent LLM framework for financial trading that simulates real-world trading firms through specialized AI agents collaborating on market analysis and trading decisions.
+**TradingAgents** is a multi-agent LLM framework for financial trading that simulates real-world trading firms through specialized AI agents collaborating on market analysis and trading decisions, managed by "The Professor" - an autonomous fund manager and personal assistant.
 
-**Current Status**: ✅ Setup Complete | 🧪 Ready for Architecture Testing | 🗂️ Cache Management Added  
+**Current Status**: ✅ Setup Complete | 🧪 Ready for Architecture Testing | 🗂️ Cache Management Added | 🎓 The Professor Design Phase  
 **Last Updated**: 2024-01-15  
-**Version**: v0.1.2-alpha
+**Version**: v0.2.0-alpha
 
 ---
 
-## 🏗️ Current Architecture
+## 🏗️ Enhanced Architecture with The Professor
 
 ```mermaid
 graph TB
-    subgraph "Input Layer"
-        A[Market Data APIs]
-        B[News Sources]
-        C[Social Media]
+    subgraph "User Interface Layer"
+        USER["👤 User (Fund Owner)"]
+        CONSENT["🤝 Consent Interface"]
+    end
+    
+    subgraph "The Professor Layer - Supreme Fund Manager"
+        PROF["🎓 The Professor<br/>(Autonomous Fund Manager)"]
+        BRAIN["🧠 MCP Server<br/>(The Professor's Brain)"]
+        THESIS["📋 Fund Thesis<br/>Management"]
+    end
+    
+    subgraph "Agent Orchestration Layer"
+        ORCHESTRATOR["🎼 Agent Orchestrator"]
+        SCHEDULER["⏰ Market Event Scheduler"]
+        MONITOR["👀 Market Listener"]
+    end
+    
+    subgraph "Dynamic Agent Pool - Modular & Scalable"
+        ANALYST_POOL["📊 Analyst Pool<br/>(Market, Sentiment, News, Fundamentals)"]
+        RESEARCH_POOL["🔍 Research Pool<br/>(Bull, Bear, Manager)"]
+        TRADING_POOL["💼 Trading Pool<br/>(Execution, Strategy)"]
+        RISK_POOL["🛡️ Risk Pool<br/>(Analysis, Portfolio Management)"]
+        CUSTOM_POOL["⚡ Custom Pool<br/>(User-Defined Specialists)"]
+    end
+    
+    subgraph "Enhanced Memory & State"
+        FINANCIAL_MEM["💾 Financial Memory"]
+        STRATEGY_MEM["📈 Strategy Memory"]
+        PERFORMANCE_MEM["📊 Performance Memory"]
+        DECISION_LOG["📝 Decision Audit Log"]
+        PROFESSOR_MEM["🧠 Professor Memory"]
+    end
+    
+    subgraph "Execution & Trading Layer"
+        PAPER_TRADE["📄 Paper Trading"]
+        LIVE_TRADE["💰 Live Trading<br/>(Future Integration)"]
+        PORTFOLIO_MGR["🏦 Portfolio Manager"]
+        ORDER_MGR["📋 Order Management"]
     end
     
     subgraph "Data Processing Layer"
@@ -24,101 +58,70 @@ graph TB
         E[Yahoo Finance]
         F[Reddit API]
         G[Google News]
-    end
-    
-    subgraph "Agent Framework (LangGraph)"
-        H[Analyst Team]
-        I[Research Team]
-        J[Trading Team]
-        K[Risk Management]
-    end
-    
-    subgraph "Analyst Team"
-        H1[Market Analyst]
-        H2[Sentiment Analyst]
-        H3[News Analyst]
-        H4[Fundamentals Analyst]
-    end
-    
-    subgraph "Research Team"
-        I1[Bull Researcher]
-        I2[Bear Researcher]
-        I3[Research Manager]
-    end
-    
-    subgraph "Trading Team"
-        J1[Trader Agent]
-    end
-    
-    subgraph "Risk Management"
-        K1[Risk Analyst]
-        K2[Portfolio Manager]
+        REALTIME[Real-time Market Data]
+        EVENTS[Economic Calendar]
     end
     
     subgraph "LLM Backend"
         L[OpenAI API]
         M[gpt-4o-mini]
+        LOCAL[Local DeepSeek Models - Future]
     end
     
-    subgraph "Memory & State"
-        N[Financial Memory]
-        O[Agent State]
-        P[Trading History]
-    end
+    USER --> CONSENT
+    CONSENT --> PROF
+    PROF --> BRAIN
+    PROF --> THESIS
+    PROF --> ORCHESTRATOR
+    ORCHESTRATOR --> SCHEDULER
+    ORCHESTRATOR --> MONITOR
     
-    subgraph "Output Layer"
-        Q[Trading Decisions]
-        R[Risk Assessments]
-        S[Reports]
-    end
+    BRAIN --> ANALYST_POOL
+    BRAIN --> RESEARCH_POOL
+    BRAIN --> TRADING_POOL
+    BRAIN --> RISK_POOL
+    BRAIN --> CUSTOM_POOL
     
-    A --> D
-    B --> G
-    C --> F
-    D --> H
-    E --> H
-    F --> H
-    G --> H
+    PROF --> FINANCIAL_MEM
+    PROF --> STRATEGY_MEM
+    PROF --> PERFORMANCE_MEM
+    PROF --> DECISION_LOG
+    PROF --> PROFESSOR_MEM
     
-    H --> I
-    I --> J
-    J --> K
+    ORCHESTRATOR --> PAPER_TRADE
+    PAPER_TRADE --> LIVE_TRADE
+    PORTFOLIO_MGR --> PAPER_TRADE
+    PORTFOLIO_MGR --> LIVE_TRADE
+    ORDER_MGR --> PORTFOLIO_MGR
     
-    H1 --> H
-    H2 --> H
-    H3 --> H
-    H4 --> H
+    MONITOR --> D
+    MONITOR --> E
+    MONITOR --> F
+    MONITOR --> G
+    MONITOR --> REALTIME
+    MONITOR --> EVENTS
     
-    I1 --> I
-    I2 --> I
-    I3 --> I
+    L --> PROF
+    L --> ANALYST_POOL
+    L --> RESEARCH_POOL
+    L --> TRADING_POOL
+    L --> RISK_POOL
     
-    J1 --> J
-    
-    K1 --> K
-    K2 --> K
-    
-    L --> H
-    L --> I
-    L --> J
-    L --> K
-    
-    N --> H
-    N --> I
-    N --> J
-    N --> K
-    
-    K --> Q
-    K --> R
-    K --> S
+    SCHEDULER -.-> ANALYST_POOL
+    SCHEDULER -.-> RESEARCH_POOL
+    SCHEDULER -.-> TRADING_POOL
 ```
 
-### 🔧 Technical Stack
+### 🔧 Enhanced Technical Stack
 - **Framework**: LangGraph for agent orchestration
+- **Supreme Manager**: The Professor (autonomous fund manager)
+- **MCP Server**: The Professor's brain for tool access and agent management
 - **LLMs**: OpenAI GPT-4o-mini (testing), planned DeepSeek (production)
-- **Data Sources**: FinnHub, Yahoo Finance, Reddit, Google News
-- **Memory**: Custom FinancialSituationMemory
-- **Environment**: Python 3.9+, .env configuration
+- **Data Sources**: FinnHub, Yahoo Finance, Reddit, Google News, Real-time feeds
+- **Memory**: Enhanced memory system with Professor memory and decision logging
+- **Agent Management**: Dynamic agent pools with modular deployment
+- **Fund Management**: Collaborative fund thesis development and management
+- **Environment**: Python 3.9+, .env configuration, MCP protocol
 
 ---
 
@@ -143,16 +146,39 @@ graph TB
 - [ ] **Architecture Testing**: Validating agent interactions and decision flow
 - [ ] **Cost Optimization**: Measuring and optimizing token usage
 
+### 🎓 The Professor Implementation (NEW)
+- [ ] **MCP Server Setup**: The Professor's brain and tool access system
+- [ ] **Professor Agent Core**: Supreme fund manager with autonomous decision-making
+- [ ] **Agent Orchestration**: Dynamic agent deployment and management
+- [ ] **Hierarchical Agent Factory**: Category → Specialization → Fine-tuning system
+- [ ] **Fund Thesis Management**: Collaborative investment philosophy development
+- [ ] **Consent Management**: User approval system for major decisions
+- [ ] **Market Event Listener**: Real-time monitoring and trigger system
+
 ### ❌ Pending
 - [ ] **Historical Backtesting**: Testing against historical market data
 - [ ] **Performance Metrics**: Quantitative evaluation of trading decisions
 - [ ] **Local Model Integration**: DeepSeek model deployment
 - [ ] **Scalability Testing**: Multi-asset, multi-timeframe analysis
 - [ ] **Production Infrastructure**: Raspberry Pi cluster setup
+- [ ] **Live Trading Integration**: Real broker connection and execution
+- [ ] **Regulatory Compliance**: Trading regulations and audit systems
 
 ---
 
 ## 📝 Changelog
+
+### v0.2.0-alpha (2024-01-15)
+- **MAJOR**: Added "The Professor" - autonomous fund manager and supreme orchestrator
+- **Added**: Enhanced architecture with MCP Server as The Professor's brain
+- **Added**: Agent orchestration layer with dynamic agent pool management
+- **Added**: Fund thesis management system for collaborative investment strategy
+- **Added**: Consent management system for autonomous vs. user-approved decisions
+- **Added**: Market event listener and scheduler for real-time triggers
+- **Added**: Enhanced memory system with Professor memory and decision audit logs
+- **Added**: Trading execution layer with paper trading foundation
+- **Upgraded**: Architecture from simple agent coordination to autonomous fund management
+- **Planning**: Roadmap updated with The Professor implementation phases
 
 ### v0.1.2-alpha (2024-01-15)
 - **Added**: Complete data cache management system with interactive CLI
@@ -238,6 +264,59 @@ graph TB
 
 ## 🚀 Major Project Phases
 
+### Phase 1.5: The Professor Implementation (Month 0.5-1)
+
+**Objective**: Implement The Professor as the supreme autonomous fund manager
+
+#### 1.5.1 MCP Server Foundation ("The Professor's Brain")
+- [ ] **Core MCP Server Setup**
+  - Design MCP server architecture for financial tool access
+  - Implement agent management tools (deploy, remove, reorder agents)
+  - Create strategy controller for fund thesis management
+  - Build consent requestor for user approval workflows
+  - Develop performance monitor for tracking agent contributions
+  - Add risk calculator for real-time position sizing
+
+- [ ] **Professor-MCP Integration**
+  - Create MCP client for The Professor agent
+  - Implement tool discovery and capability negotiation
+  - Add error handling and fallback mechanisms
+  - Test MCP server stability and performance
+
+#### 1.5.2 The Professor Agent Core
+- [ ] **Autonomous Decision Engine**
+  - Implement consent-driven decision making framework
+  - Create autonomous vs. user-approval decision classification
+  - Build decision audit logging system
+  - Develop decision outcome tracking and learning
+
+- [ ] **Agent Orchestration System**
+  - Design dynamic agent pool management
+  - Implement agent performance tracking and scoring
+  - Create agent composition strategies for different market conditions
+  - Build agent deployment and retirement logic
+
+- [ ] **Agent Factory & Customization System**
+  - Create hierarchical agent selection: Category → Specialization → Fine-tuning
+  - Implement agent templates for each category (Analyst, Research, Trading, Risk)
+  - Build specialization modules within each category
+  - Develop fine-tuning parameters (personality, expertise, timeframe, risk profile)
+  - Create agent builder with drag-and-drop customization interface
+  - Implement agent versioning and A/B testing capabilities
+
+#### 1.5.3 Fund Management System
+- [ ] **Collaborative Fund Thesis**
+  - Create interactive fund thesis development interface
+  - Implement investment philosophy configuration
+  - Build sector preference and risk parameter management
+  - Develop performance target and rebalancing rule systems
+
+- [ ] **Market Event System**
+  - Implement real-time market listener with trigger conditions
+  - Create economic calendar integration for scheduled analysis
+  - Build volatility spike detection for emergency responses
+  - Develop news sentiment monitoring with action thresholds
+
 ### Phase 2: Local Model Integration (Month 1-2)
 
 **Objective**: Replace OpenAI API with local DeepSeek models
@@ -258,16 +337,68 @@ graph TB
   - Implement model switching configuration
   - Test seamless transition between local/remote models
 
-#### 2.2 Raspberry Pi Cluster Architecture
-- [ ] **Hardware Planning**
-  - Calculate compute requirements for multi-agent system
-  - Plan Raspberry Pi cluster configuration
-  - Design power, cooling, and networking setup
+#### 2.2 Raspberry Pi Cluster Architecture - The Professor's Distributed Empire
 
-- [ ] **Distributed Processing**
-  - Design agent-to-Pi assignment strategy
-  - Implement load balancing for inference requests
-  - Create failover mechanisms for hardware failures
+- [ ] **Master Pi Configuration (The Professor's HQ)**
+  - Raspberry Pi 5 8GB for The Professor + MCP Server
+  - High-speed SSD for agent orchestration and decision logging
+  - Dedicated networking for cluster coordination
+  - Backup power supply for continuous operation
+
+- [ ] **Specialized Pi Node Categories**
+  - **Analyst Pis**: Pi 5 4GB for fast market analysis agents
+  - **Research Pis**: Pi 5 8GB for complex reasoning agents  
+  - **Trading Pis**: Pi 5 4GB with low-latency networking
+  - **Risk Pis**: Pi 5 8GB for portfolio and risk calculations
+  - **Data Pis**: Pi 4 4GB for data collection and preprocessing
+
+- [ ] **Local LLM Distribution Strategy**
+  - **DeepSeek-R1-7B**: Fast agents (market monitoring, alerts)
+  - **DeepSeek-V3-67B Quantized**: Complex reasoning (research, analysis)
+  - **Specialized Fine-tunes**: Domain-specific financial models
+  - **Model Hot-swapping**: Dynamic model allocation based on workload
+
+- [ ] **Cluster Management System**
+  - The Professor's Pi deployment orchestrator
+  - Automatic Pi health monitoring and failover
+  - Dynamic agent migration between healthy Pis
+  - Load balancing based on Pi performance metrics
+  - Cluster-wide memory and state synchronization
+
+- [ ] **Hardware Specifications by Node Type**
+  ```
+  Master Pi (The Professor):
+  - Pi 5 8GB RAM
+  - 1TB NVMe SSD
+  - Gigabit Ethernet + WiFi 6
+  - UPS backup power
+  
+  Analyst Pis (4-6 nodes):
+  - Pi 5 4GB RAM
+  - 512GB SSD
+  - Fast networking
+  - Cooling fans
+  
+  Research Pis (2-4 nodes):
+  - Pi 5 8GB RAM  
+  - 1TB SSD
+  - High-performance cooling
+  - Dedicated power
+  
+  Data Pis (2-3 nodes):
+  - Pi 4 4GB RAM
+  - 256GB SSD
+  - Multiple network interfaces
+  - 24/7 operation optimized
+  ```
+
+- [ ] **Distributed Processing Advantages**
+  - **Agent Isolation**: Each agent on dedicated hardware
+  - **Fault Tolerance**: Pi failures don't crash entire system
+  - **Scalability**: Add more Pis as fund grows
+  - **Specialization**: Optimize each Pi for specific agent types
+  - **Cost Control**: No API fees, predictable hardware costs
+  - **Privacy**: Complete local operation, no data leaves cluster
 
 ### Phase 3: MCP Server Integration (Month 2-3)
 
@@ -302,41 +433,91 @@ graph TB
   - Event-driven analysis triggers
   - Real-time risk monitoring
 
-### Phase 4: Agent Specialization & Expansion (Month 3-4)
+### Phase 4: Advanced Agent Factory & Customization (Month 3-4)
 
-**Objective**: Create more specialized and sophisticated agents
+**Objective**: Create comprehensive hierarchical agent customization system
 
-#### 4.1 Specialized Analyst Agents
-- [ ] **Technical Analysis Specialists**
-  - Chart pattern recognition agent
-  - Options flow analysis agent
-  - Momentum/trend analysis agent
-  - Support/resistance level agent
+#### 4.1 Agent Category Templates
+- [ ] **Analyst Category Specializations**
+  - Technical Analyst (charts, patterns, indicators)
+  - News Analyst (sentiment, event impact)
+  - Fundamental Analyst (earnings, valuation, financials)
+  - Quantitative Analyst (statistical models, backtesting)
+  - Macro Analyst (economic indicators, policy impact)
+  - Sentiment Analyst (social media, market psychology)
+  - Custom Analyst (user-defined specialization)
 
-- [ ] **Fundamental Analysis Specialists**
-  - Earnings analysis agent
-  - Sector rotation agent
-  - Economic indicator agent
-  - Company comparison agent
+- [ ] **Research Category Specializations**
+  - Bull Researcher (bullish thesis development)
+  - Bear Researcher (bearish thesis development)
+  - Pairs Researcher (relative value analysis)
+  - Momentum Researcher (trend identification)
+  - Value Researcher (undervaluation detection)
+  - Growth Researcher (growth story analysis)
+  - Custom Researcher (user-defined focus)
 
-- [ ] **Alternative Data Agents**
-  - Satellite imagery analysis (retail foot traffic)
-  - Social media sentiment (beyond Reddit)
-  - Patent filing analysis
-  - Supply chain analysis
+- [ ] **Trading Category Specializations**
+  - Scalp Trader (high-frequency, short-term)
+  - Swing Trader (medium-term momentum)
+  - Position Trader (long-term trend following)
+  - Options Trader (derivatives strategies)
+  - Arbitrage Trader (price discrepancy exploitation)
+  - Algo Trader (systematic rule-based execution)
+  - Custom Trader (user-defined strategy)
 
-#### 4.2 Advanced Trading Agents
-- [ ] **Strategy Specialists**
-  - Pairs trading agent
-  - Arbitrage opportunity agent
-  - Options strategy agent
-  - Swing trading agent
+- [ ] **Risk Category Specializations**
+  - VaR Analyst (value-at-risk calculation)
+  - Correlation Analyst (portfolio correlation monitoring)
+  - Portfolio Optimizer (allocation optimization)
+  - Black Swan Detector (tail risk identification)
+  - Position Sizer (optimal position sizing)
+  - Hedge Strategist (portfolio hedging)
+  - Custom Risk Analyst (user-defined risk focus)
 
-- [ ] **Risk Management Specialists**
-  - VaR calculation agent
-  - Correlation analysis agent
-  - Portfolio optimization agent
-  - Black swan detection agent
+#### 4.2 Fine-Tuning Parameters System
+- [ ] **Agent Personality Traits**
+  - Aggressiveness level (conservative to aggressive)
+  - Confidence threshold (high confidence vs. quick decisions)
+  - Collaboration style (team player vs. independent)
+  - Communication verbosity (concise vs. detailed)
+
+- [ ] **Expertise Configuration**
+  - Experience level (junior, senior, expert)
+  - Knowledge depth (broad generalist vs. deep specialist)
+  - Learning rate (how quickly agent adapts)
+  - Decision speed (thorough analysis vs. quick response)
+
+- [ ] **Operational Parameters**
+  - Time horizon focus (scalping to long-term investing)
+  - Risk tolerance (risk-averse to risk-seeking)
+  - Market condition preference (bull, bear, sideways)
+  - Asset class specialization (stocks, options, crypto, etc.)
+
+#### 4.3 Agent Builder Interface
+- [ ] **Visual Agent Constructor**
+  - Drag-and-drop agent building interface
+  - Real-time parameter adjustment with preview
+  - Agent template library with preset configurations
+  - Clone and modify existing successful agents
+
+- [ ] **Agent Testing & Validation**
+  - Sandbox environment for new agent testing
+  - A/B testing framework for agent comparison
+  - Performance benchmarking against existing agents
+  - Historical backtesting for custom agent strategies
+
+#### 4.4 Advanced Agent Management
+- [ ] **Agent Evolution System**
+  - Automatic parameter optimization based on performance
+  - Agent breeding (combine successful traits)
+  - Agent retirement based on underperformance
+  - Agent promotion/demotion based on results
+
+- [ ] **Specialized Agent Pools**
+  - Alternative Data Agents (satellite imagery, patent analysis)
+  - Sector-Specific Agents (tech, healthcare, energy)
+  - Geographic Specialists (US, EU, Asia markets)
+  - Event-Driven Agents (earnings, M&A, regulatory)
 
 ### Phase 5: Historical Backtesting & Validation (Month 4-5)
 
@@ -450,11 +631,12 @@ graph TB
 
 ## 📞 Next Actions Summary
 
-### This Week (High Priority)
+### This Week (High Priority - The Professor Phase)
 1. 🔴 **Resolve OpenAI API access** - Add payment method to unlock quota
-2. 🟡 **Initial architecture validation** - Test single agent execution
-3. 🟡 **Cost monitoring setup** - Measure token usage per analysis
-4. 🟢 **Git workflow** - ✅ Complete: Fork setup and initial commit
+2. 🟡 **MCP Server Design** - Design The Professor's brain architecture
+3. 🟡 **Professor Agent Core** - Implement basic autonomous decision framework
+4. 🟡 **Fund Thesis System** - Create collaborative investment philosophy setup
+5. 🟢 **Git workflow** - ✅ Complete: Fork setup and initial commit
 
 ### Completed This Week ✅
 - ✅ **Fixed configuration paths** - Removed hardcoded user directories
