@@ -73,11 +73,11 @@ class MessageBuffer:
         }
 
     def add_message(self, message_type, content):
-        timestamp = datetime.datetime.now().strftime("%H:%M:%S")
+        timestamp = datetime.now().strftime("%H:%M:%S")
         self.messages.append((timestamp, message_type, content))
 
     def add_tool_call(self, tool_name, args):
-        timestamp = datetime.datetime.now().strftime("%H:%M:%S")
+        timestamp = datetime.now().strftime("%H:%M:%S")
         self.tool_calls.append((timestamp, tool_name, args))
 
     def update_agent_status(self, agent, status):
@@ -377,6 +377,15 @@ def update_display(layout, spinner_text=None):
 
 def get_user_selections():
     """Get all user selections before starting the analysis display."""
+    
+    # Create a boxed questionnaire for each step
+    def create_question_box(title, prompt, default=None):
+        box_content = f"[bold]{title}[/bold]\n"
+        box_content += f"[dim]{prompt}[/dim]"
+        if default:
+            box_content += f"\n[dim]Default: {default}[/dim]"
+        return Panel(box_content, border_style="blue", padding=(1, 2))
+    
     # Display ASCII art welcome message
     with open("./cli/static/welcome.txt", "r") as f:
         welcome_ascii = f.read()
@@ -401,13 +410,15 @@ def get_user_selections():
     console.print(Align.center(welcome_box))
     console.print()  # Add a blank line after the welcome box
 
-    # Create a boxed questionnaire for each step
-    def create_question_box(title, prompt, default=None):
-        box_content = f"[bold]{title}[/bold]\n"
-        box_content += f"[dim]{prompt}[/dim]"
-        if default:
-            box_content += f"\n[dim]Default: {default}[/dim]"
-        return Panel(box_content, border_style="blue", padding=(1, 2))
+    # Step 0: Data cache management
+    console.print(
+        create_question_box(
+            "Step 0: Data Cache Management", "Manage cached analysis data (optional)"
+        )
+    )
+    if not manage_data_cache():
+        console.print("[yellow]Exiting...[/yellow]")
+        exit(0)
 
     # Step 1: Ticker symbol
     console.print(
@@ -418,7 +429,7 @@ def get_user_selections():
     selected_ticker = get_ticker()
 
     # Step 2: Analysis date
-    default_date = datetime.datetime.now().strftime("%Y-%m-%d")
+    default_date = datetime.now().strftime("%Y-%m-%d")
     console.print(
         create_question_box(
             "Step 2: Analysis Date",
@@ -475,12 +486,12 @@ def get_analysis_date():
     """Get the analysis date from user input."""
     while True:
         date_str = typer.prompt(
-            "", default=datetime.datetime.now().strftime("%Y-%m-%d")
+            "", default=datetime.now().strftime("%Y-%m-%d")
         )
         try:
             # Validate date format and ensure it's not in the future
-            analysis_date = datetime.datetime.strptime(date_str, "%Y-%m-%d")
-            if analysis_date.date() > datetime.datetime.now().date():
+            analysis_date = datetime.strptime(date_str, "%Y-%m-%d")
+            if analysis_date.date() > datetime.now().date():
                 console.print("[red]Error: Analysis date cannot be in the future[/red]")
                 continue
             return date_str
@@ -996,6 +1007,21 @@ def run_analysis():
         for section in message_buffer.report_sections.keys():
             if section in final_state:
                 message_buffer.update_report_section(section, final_state[section])
+
+        # Save the final report to cache
+        if message_buffer.final_report:
+            try:
+                report_path = save_final_report(
+                    selections['ticker'], 
+                    selections['analysis_date'], 
+                    final_state, 
+                    message_buffer.final_report
+                )
+                message_buffer.add_message("System", f"Report saved to: {report_path}")
+                console.print(f"\n[green]📄 Final report saved to: {report_path}[/green]")
+            except Exception as e:
+                message_buffer.add_message("System", f"Error saving report: {str(e)}")
+                console.print(f"\n[red]Error saving report: {str(e)}[/red]")
 
         # Display the complete final report
         display_complete_report(final_state)

@@ -15,5 +15,5 @@ DEFAULT_CONFIG = {
     "max_risk_discuss_rounds": 1,
     "max_recur_limit": 100,
     # Tool settings
-    "online_tools": False,  # Start with offline for testing
+    "online_tools": True,  # Start with offline for testing
 }

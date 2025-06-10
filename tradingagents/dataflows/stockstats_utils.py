@@ -49,12 +49,13 @@ class StockstatsUtils:
             start_date = start_date.strftime("%Y-%m-%d")
             end_date = end_date.strftime("%Y-%m-%d")
 
-            # Get config and ensure cache directory exists
+            # Get config and ensure ticker-specific cache directory exists
             config = get_config()
-            os.makedirs(config["data_cache_dir"], exist_ok=True)
+            ticker_cache_dir = os.path.join(config["data_cache_dir"], symbol.upper())
+            os.makedirs(ticker_cache_dir, exist_ok=True)
 
             data_file = os.path.join(
-                config["data_cache_dir"],
+                ticker_cache_dir,
                 f"{symbol}-YFin-data-{start_date}-{end_date}.csv",
             )
 

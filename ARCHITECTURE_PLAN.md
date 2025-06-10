@@ -3,9 +3,9 @@
 ## 📋 Project Overview
 **TradingAgents** is a multi-agent LLM framework for financial trading that simulates real-world trading firms through specialized AI agents collaborating on market analysis and trading decisions.
 
-**Current Status**: ✅ Setup Complete | 🧪 Ready for Architecture Testing  
-**Last Updated**: 2024-06-09  
-**Version**: v0.1.1-alpha
+**Current Status**: ✅ Setup Complete | 🧪 Ready for Architecture Testing | 🗂️ Cache Management Added  
+**Last Updated**: 2024-01-15  
+**Version**: v0.1.2-alpha
 
 ---
 
@@ -130,11 +130,13 @@ graph TB
 - [x] **Data Integration**: FinnHub, Yahoo Finance, Reddit APIs
 - [x] **Basic Agent Types**: Market, Sentiment, News, Fundamentals analysts
 - [x] **Memory System**: Agent memory for learning from past decisions
-- [x] **CLI Interface**: Interactive command-line interface
+- [x] **CLI Interface**: Interactive command-line interface with cache management
 - [x] **Configuration Management**: Fixed hardcoded paths, optimized for testing
 - [x] **Secure API Management**: .env file support with automatic loading
 - [x] **User-Friendly Interface**: Improved main.py with clear error messages
 - [x] **Development Workflow**: Git setup with fork tracking and proper remotes
+- [x] **Data Cache Management**: Ticker-specific directories, report saving, cache cleanup
+- [x] **Report Persistence**: Final analysis reports saved to organized cache structure
 
 ### 🔄 In Progress
 - [ ] **OpenAI API Access**: Resolving quota/billing setup (blocked)
@@ -151,6 +153,17 @@ graph TB
 ---
 
 ## 📝 Changelog
+
+### v0.1.2-alpha (2024-01-15)
+- **Added**: Complete data cache management system with interactive CLI
+- **Added**: Ticker-specific directory structure for organized data storage
+- **Added**: Automatic final report saving to cache directories
+- **Added**: Cache scanning and deletion functionality with confirmation prompts
+- **Added**: Step 0 cache management in CLI workflow before analysis
+- **Improved**: Data organization with per-ticker directories instead of flat files
+- **Improved**: User experience with cache cleanup and data management tools
+- **Fixed**: DateTime import issues in CLI components
+- **Security**: Added data cache directory to .gitignore to prevent commit of user data
 
 ### v0.1.1-alpha (2024-06-09)
 - **Added**: Automatic .env file loading with tradingagents.env_loader
@@ -189,10 +202,11 @@ graph TB
    - [ ] Test memory persistence between runs
 
 3. **Data Pipeline Validation**
-   - [ ] Test offline data sources (cached financial data)
-   - [ ] Validate data format consistency
-   - [ ] Test error handling for missing data
-   - [ ] Verify date range handling
+   - [x] Test offline data sources (cached financial data)
+   - [x] Validate data format consistency
+   - [x] Test error handling for missing data
+   - [x] Verify date range handling
+   - [x] Test ticker-specific directory structure
 
 4. **Cost Optimization Testing**
    - [ ] Measure token usage per agent
